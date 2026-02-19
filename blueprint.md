@@ -30,10 +30,21 @@ This project is a simple, single-page web application that allows users to gener
 *   Added **Dark Mode** toggle with persistent storage.
 *   Refactored styling to use **CSS Variables** for easier theming.
 *   Improved the visual design of the container and buttons with rounded corners and modern shadows.
+*   Implemented a **Partnership Inquiry Form** using Formspree (`https://formspree.io/f/mkovvjzl`) for handling user submissions.
+*   Verified code integrity (syntax check) and prepared for deployment.
+*   Added `firebase.json` for Firebase Hosting support.
 
 ## Planned Enhancements
 
-### 1. Interactive Animations
+### 1. Partnership Inquiry Form
+*   **Objective:** Allow users to send partnership inquiries directly from the page.
+*   **Implementation:**
+    *   **Formspree Integration:** Uses Formspree as the backend handler for form submissions.
+    *   **Web Component:** Encapsulated `<partnership-form>` component for a clean and reusable implementation.
+    *   **Fields:** Company Name, Contact Name, Email, and Message.
+    *   **Validation:** Client-side validation with immediate visual feedback using modern CSS (`:has()`).
+
+### 2. Interactive Animations
 *   Further refine the ball entry animations (e.g., rolling effect).
 *   Provide visual feedback on the button click (e.g., ripple effect).
 
