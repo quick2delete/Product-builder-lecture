@@ -249,15 +249,16 @@ class DisqusComments extends HTMLElement {
             <div class="comments-container">
                 <h2>댓글 (Comments)</h2>
                 <div id="disqus_thread"></div>
+                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
             </div>
         `;
     }
 
     loadDisqus() {
-        const shortname = 'lotto-generator-1'; // 실제 사용 시 본인의 Disqus shortname으로 변경 필요
+        // User provided configuration: https://oneplayground.disqus.com/embed.js
         const d = document;
         const s = d.createElement('script');
-        s.src = \`https://\${shortname}.disqus.com/embed.js\`;
+        s.src = 'https://oneplayground.disqus.com/embed.js';
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     }
