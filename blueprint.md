@@ -12,6 +12,13 @@ This project is a simple, single-page web application that allows users to gener
     *   **`<lotto-ball>`:** Encapsulates the styling and logic for individual lotto balls, including dynamic color gradients based on the number range and a "pop-in" entry animation.
 *   **Logic (`main.js`):** Generates 6 unique random numbers between 1 and 45 and renders them sequentially with a slight delay for a better visual experience.
 
+### Feature: Disqus Comments
+*   **Objective:** Enable community interaction by adding a comment section.
+*   **Implementation:**
+    *   **Web Component:** `<disqus-comments>` encapsulates the Disqus embed logic.
+    *   **Configuration:** Uses a placeholder shortname that can be configured by the user.
+    *   **Styling:** Contained within a modern card layout consistent with the project's aesthetic.
+
 ### Feature: Dark and Light Mode
 *   **Objective:** Provide users with a choice of visual themes (Dark/Light).
 *   **Implementation:**
@@ -31,6 +38,7 @@ This project is a simple, single-page web application that allows users to gener
 *   Refactored styling to use **CSS Variables** for easier theming.
 *   Improved the visual design of the container and buttons with rounded corners and modern shadows.
 *   Implemented a **Partnership Inquiry Form** using Formspree (`https://formspree.io/f/mkovvjzl`) for handling user submissions.
+*   Added **Disqus Comments** integration via a custom Web Component.
 *   Verified code integrity (syntax check) and prepared for deployment.
 *   Added `firebase.json` for Firebase Hosting support.
 

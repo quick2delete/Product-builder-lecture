@@ -167,7 +167,7 @@ class PartnershipForm extends HTMLElement {
                     </div>
                     <div class="form-group">
                         <label for="message">문의 내용</label>
-                        <textarea id="message" name="message" placeholder="제휴 관련 내용을 상세히 적어주세요" required></textarea>
+                        <textarea id="message" name="message" placeholder="제휴 관련 내용을  상세히 적어주세요" required></textarea>
                     </div>
                     <button type="submit" class="submit-btn">문의하기</button>
                 </form>
@@ -210,6 +210,61 @@ class PartnershipForm extends HTMLElement {
 }
 
 customElements.define('partnership-form', PartnershipForm);
+
+class DisqusComments extends HTMLElement {
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+    }
+
+    connectedCallback() {
+        this.render();
+        this.loadDisqus();
+    }
+
+    render() {
+        this.shadowRoot.innerHTML = `
+            <style>
+                :host {
+                    display: block;
+                    margin-top: 40px;
+                }
+                .comments-container {
+                    background: var(--container-bg, #ffffff);
+                    padding: 24px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 20px var(--card-shadow, rgba(0, 0, 0, 0.1));
+                }
+                h2 {
+                    margin-top: 0;
+                    font-family: 'Montserrat', sans-serif;
+                    color: var(--text-color, #333);
+                    font-size: 1.5rem;
+                    border-bottom: 2px solid var(--btn-bg, #008CBA);
+                    padding-bottom: 8px;
+                    margin-bottom: 20px;
+                    text-align: left;
+                }
+            </style>
+            <div class="comments-container">
+                <h2>댓글 (Comments)</h2>
+                <div id="disqus_thread"></div>
+            </div>
+        `;
+    }
+
+    loadDisqus() {
+        const shortname = 'lotto-generator-1'; // 실제 사용 시 본인의 Disqus shortname으로 변경 필요
+        const d = document;
+        const s = d.createElement('script');
+        s.src = \`https://\${shortname}.disqus.com/embed.js\`;
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    }
+}
+
+customElements.define('disqus-comments', DisqusComments);
+
 
 document.getElementById('generate-btn').addEventListener('click', () => {
     const lottoNumbersContainer = document.getElementById('lotto-numbers');
