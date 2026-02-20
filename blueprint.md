@@ -12,12 +12,13 @@ This project is a simple, single-page web application that allows users to gener
     *   **`<lotto-ball>`:** Encapsulates the styling and logic for individual lotto balls, including dynamic color gradients based on the number range and a "pop-in" entry animation.
 *   **Logic (`main.js`):** Generates 6 unique random numbers between 1 and 45 and renders them sequentially with a slight delay for a better visual experience.
 
-### Feature: Disqus Comments
-*   **Objective:** Enable community interaction by adding a comment section.
+### Feature: Professional Custom Comment System
+*   **Objective:** Enable community interaction with a professional, integrated UI.
 *   **Implementation:**
-    *   **Web Component:** `<disqus-comments>` encapsulates the Disqus embed logic.
-    *   **Configuration:** Uses a placeholder shortname that can be configured by the user.
-    *   **Styling:** Contained within a modern card layout consistent with the project's aesthetic.
+    *   **Web Component:** `<professional-comments>` custom element.
+    *   **UI Design:** Modern card-based layout with avatars, timestamps, and liking functionality.
+    *   **Persistence:** Uses `localStorage` to save and retrieve comments, providing a seamless user experience.
+    *   **Features:** Comment registration, like/upvote system, and animated entry for new comments.
 
 ### Feature: Dark and Light Mode
 *   **Objective:** Provide users with a choice of visual themes (Dark/Light).
@@ -38,7 +39,7 @@ This project is a simple, single-page web application that allows users to gener
 *   Refactored styling to use **CSS Variables** for easier theming.
 *   Improved the visual design of the container and buttons with rounded corners and modern shadows.
 *   Implemented a **Partnership Inquiry Form** using Formspree (`https://formspree.io/f/mkovvjzl`) for handling user submissions.
-*   Added **Disqus Comments** integration via a custom Web Component.
+*   Replaced Disqus with a **Custom Professional Comment System** for better design integration and performance.
 *   Verified code integrity (syntax check) and prepared for deployment.
 *   Added `firebase.json` for Firebase Hosting support.
 
@@ -56,8 +57,8 @@ This project is a simple, single-page web application that allows users to gener
 *   Further refine the ball entry animations (e.g., rolling effect).
 *   Provide visual feedback on the button click (e.g., ripple effect).
 
-### 2. "Past Draws" History
+### 3. "Past Draws" History
 *   Implement a section below the main card to store and display previous results using `localStorage`.
 
-### 3. Advanced Responsive Design
+### 4. Advanced Responsive Design
 *   Enhance responsiveness using Container Queries to adapt the ball layout perfectly on all screen sizes.

@@ -211,15 +211,44 @@ class PartnershipForm extends HTMLElement {
 
 customElements.define('partnership-form', PartnershipForm);
 
-class DisqusComments extends HTMLElement {
+class ProfessionalComments extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
+        this.comments = JSON.parse(localStorage.getItem('lotto-comments')) || [
+            { id: 1, author: '김철수', text: '번호가 정말 잘 나오네요! 오늘 1등 예감입니다.', date: '2026-02-19 14:20', likes: 12 },
+            { id: 2, author: '이영희', text: '다크 모드 디자인이 정말 깔끔하고 보기 편해요.', date: '2026-02-19 15:05', likes: 5 }
+        ];
     }
 
     connectedCallback() {
         this.render();
-        this.loadDisqus();
+    }
+
+    saveComments() {
+        localStorage.setItem('lotto-comments', JSON.stringify(this.comments));
+    }
+
+    addComment(author, text) {
+        const newComment = {
+            id: Date.now(),
+            author: author || '익명 사용자',
+            text: text,
+            date: new Date().toLocaleString('ko-KR', { hour12: false }).replace(/\. /g, '-').replace('.', ''),
+            likes: 0
+        };
+        this.comments.unshift(newComment);
+        this.saveComments();
+        this.render();
+    }
+
+    handleLike(id) {
+        const comment = this.comments.find(c => c.id === id);
+        if (comment) {
+            comment.likes++;
+            this.saveComments();
+            this.render();
+        }
     }
 
     render() {
@@ -228,43 +257,203 @@ class DisqusComments extends HTMLElement {
                 :host {
                     display: block;
                     margin-top: 40px;
+                    text-align: left;
+                    font-family: 'Roboto', sans-serif;
                 }
-                .comments-container {
+                .comments-card {
                     background: var(--container-bg, #ffffff);
-                    padding: 24px;
-                    border-radius: 12px;
-                    box-shadow: 0 4px 20px var(--card-shadow, rgba(0, 0, 0, 0.1));
+                    padding: 32px;
+                    border-radius: 16px;
+                    box-shadow: 0 8px 32px var(--card-shadow, rgba(0, 0, 0, 0.1));
                 }
                 h2 {
-                    margin-top: 0;
+                    margin: 0 0 24px 0;
                     font-family: 'Montserrat', sans-serif;
                     color: var(--text-color, #333);
-                    font-size: 1.5rem;
-                    border-bottom: 2px solid var(--btn-bg, #008CBA);
-                    padding-bottom: 8px;
-                    margin-bottom: 20px;
-                    text-align: left;
+                    font-size: 1.6rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                }
+                h2::after {
+                    content: '';
+                    flex: 1;
+                    height: 2px;
+                    background: linear-gradient(to right, var(--btn-bg, #008CBA), transparent);
+                }
+                .input-section {
+                    margin-bottom: 32px;
+                    background: var(--bg-color, #f8f9fa);
+                    padding: 20px;
+                    border-radius: 12px;
+                    border: 1px solid rgba(0,0,0,0.05);
+                }
+                .input-row {
+                    display: flex;
+                    gap: 12px;
+                    margin-bottom: 12px;
+                }
+                input, textarea {
+                    width: 100%;
+                    padding: 12px 16px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    background: white;
+                    color: #333;
+                    font-family: inherit;
+                    font-size: 0.95rem;
+                    transition: all 0.3s;
+                }
+                input:focus, textarea:focus {
+                    outline: none;
+                    border-color: var(--btn-bg, #008CBA);
+                    box-shadow: 0 0 0 3px rgba(0, 140, 186, 0.15);
+                }
+                .submit-row {
+                    display: flex;
+                    justify-content: flex-end;
+                }
+                .btn-submit {
+                    padding: 10px 24px;
+                    background: var(--btn-bg, #008CBA);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    transition: transform 0.2s, background 0.3s;
+                }
+                .btn-submit:hover {
+                    background: var(--btn-hover, #005f7a);
+                    transform: translateY(-1px);
+                }
+                .comment-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                }
+                .comment-item {
+                    display: flex;
+                    gap: 16px;
+                    padding-bottom: 20px;
+                    border-bottom: 1px solid rgba(0,0,0,0.05);
+                    animation: slideIn 0.4s ease-out;
+                }
+                @keyframes slideIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .avatar {
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 50%;
+                    background: linear-gradient(135deg, var(--btn-bg, #008CBA), #8E44AD);
+                    color: white;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-weight: bold;
+                    font-size: 1.2rem;
+                    flex-shrink: 0;
+                }
+                .comment-content {
+                    flex: 1;
+                }
+                .comment-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 6px;
+                }
+                .author {
+                    font-weight: 700;
+                    color: var(--text-color, #333);
+                }
+                .date {
+                    font-size: 0.8rem;
+                    color: #888;
+                }
+                .text {
+                    color: var(--text-color, #444);
+                    line-height: 1.5;
+                    margin-bottom: 10px;
+                }
+                .actions {
+                    display: flex;
+                    gap: 16px;
+                }
+                .action-btn {
+                    background: none;
+                    border: none;
+                    color: #666;
+                    font-size: 0.85rem;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    transition: background 0.2s;
+                }
+                .action-btn:hover {
+                    background: rgba(0,0,0,0.05);
+                    color: var(--btn-bg, #008CBA);
+                }
+                .like-count {
+                    font-weight: bold;
                 }
             </style>
-            <div class="comments-container">
-                <h2>댓글 (Comments)</h2>
-                <div id="disqus_thread"></div>
-                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <div class="comments-card">
+                <h2>커뮤니티 대화</h2>
+                <div class="input-section">
+                    <div class="input-row">
+                        <input type="text" id="author-input" placeholder="이름 (닉네임)" style="max-width: 150px;">
+                    </div>
+                    <textarea id="text-input" placeholder="댓글을 입력해 주세요..." rows="3"></textarea>
+                    <div class="submit-row">
+                        <button class="btn-submit" id="add-btn">댓글 등록</button>
+                    </div>
+                </div>
+                <div class="comment-list">
+                    ${this.comments.map(c => `
+                        <div class="comment-item">
+                            <div class="avatar">${c.author[0]}</div>
+                            <div class="comment-content">
+                                <div class="comment-header">
+                                    <span class="author">${c.author}</span>
+                                    <span class="date">${c.date}</span>
+                                </div>
+                                <div class="text">${c.text}</div>
+                                <div class="actions">
+                                    <button class="action-btn like-btn" data-id="${c.id}">
+                                        👍 추천 <span class="like-count">${c.likes > 0 ? c.likes : ''}</span>
+                                    </button>
+                                    <button class="action-btn">답글</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
             </div>
         `;
-    }
 
-    loadDisqus() {
-        // User provided configuration: https://oneplayground.disqus.com/embed.js
-        const d = document;
-        const s = d.createElement('script');
-        s.src = 'https://oneplayground.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
+        this.shadowRoot.getElementById('add-btn').addEventListener('click', () => {
+            const author = this.shadowRoot.getElementById('author-input').value;
+            const text = this.shadowRoot.getElementById('text-input').value;
+            if (text.trim()) {
+                this.addComment(author, text);
+            }
+        });
+
+        this.shadowRoot.querySelectorAll('.like-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.handleLike(parseInt(btn.dataset.id));
+            });
+        });
     }
 }
 
-customElements.define('disqus-comments', DisqusComments);
+customElements.define('professional-comments', ProfessionalComments);
 
 
 document.getElementById('generate-btn').addEventListener('click', () => {
